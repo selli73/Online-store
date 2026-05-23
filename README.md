@@ -1,0 +1,1 @@
+Ссылка на подробное ознакомление с backend частью Online store: https://www.notion.so/35dce807cb83801493a9f927c94d09b5?source=copy_link
