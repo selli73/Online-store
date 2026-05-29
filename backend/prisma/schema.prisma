@@ -19,3 +19,13 @@ model User {
   phone     String?
   createdAt DateTime @default(now())
 }
+
+model Product {
+  id String @id @default(uuid())
+  name String @unique
+  price Int
+  applicabilityToCars String
+  partType String
+  manufacturer String?
+  description String?
+}
