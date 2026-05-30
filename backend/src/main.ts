@@ -10,7 +10,7 @@ async function bootstrap() {
   }))
   const config = new DocumentBuilder()  // помогает описать базовую информацию об API: название, описание, версию и т.д.
     .setTitle('Auto Parts Store')
-    .setDescription('Документация API для магазина')
+    .setDescription('API documentation for the store')
     .setVersion('1.0')
     .addBearerAuth()
     .addGlobalResponse({ status: 500, description: 'Internal server error' })

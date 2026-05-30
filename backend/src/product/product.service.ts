@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProductDto, DeleteProductDto, UpdateProductDto } from './dto/create-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -32,18 +32,30 @@ export class ProductService {
         return this._prisma.product.findMany()
     }
 
-    async update(dto: UpdateProductDto) {
-        // условие на то что есть эта запись или нет
-        
+    async update(id: string, dto: UpdateProductDto) {
+        const existingProduct = await this._prisma.product.findUnique({
+            where: { id }
+        });
+
+        if (!existingProduct) {
+            throw new NotFoundException(`This product does not exist`);
+        }
+
         return this._prisma.product.update({
-            where: { name: dto.name },
+            where: { id },
             data: dto
         });
     }
 
-    async delete(dto: DeleteProductDto) {
+    async delete(id: string) {
+
+        const existingProduct = await this._prisma.product.findUnique({ where: { id } });
+
+        if (!existingProduct) {
+            throw new NotFoundException('This product does not exist');
+        }
         return this._prisma.product.delete({
-            where: dto
-        })
+            where: { id }
+        });
     }
 }

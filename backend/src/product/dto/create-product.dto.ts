@@ -31,12 +31,6 @@ export class CreateProductDto {
     description?: string
 }
 
-export class DeleteProductDto {
-    @ApiProperty({ description: 'Product id' })
-    @IsString()
-    name!: string  // на id
-}
-
 export class UpdateProductDto extends PartialType(CreateProductDto) { // PartialType() - делает поля опциональными при update
 
 }
