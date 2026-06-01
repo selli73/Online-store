@@ -17,12 +17,18 @@ model User {
   password  String
   name      String?
   phone     String?
+  role      Role   @default(USER)
   createdAt DateTime @default(now())
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model Product {
-  id String @id @default(uuid())
-  name String @unique
+  id    String @id @default(uuid())
+  name  String @unique
   price Int
   applicabilityToCars String
   partType String
