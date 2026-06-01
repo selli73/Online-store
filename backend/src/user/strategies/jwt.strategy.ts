@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {  // Passpor
     // Результат validate() кладётся в request.user
     //Контроллер возвращает данные пользователя.
     validate(payload) {
-        return { userId: payload.sub, email: payload.email };
+        return { userId: payload.sub, email: payload.email, role: payload.role };
         // Passport создаст user объект на основе возвращенного значения нашего validate() метода и добавит его в качестве свойства 
         // к объекту request
     }

@@ -2,7 +2,6 @@ import { Controller, Post, Body, HttpStatus, HttpCode, UseGuards } from '@nestjs
 import { RegisterDto, LoginDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { ApiResponse, ApiOperation } from '@nestjs/swagger';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -17,8 +16,8 @@ export class UserController {
 
     @ApiOperation({ summary: "user authorization" })
     @ApiResponse({ status: 200, description: 'The user has successfully logged in' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
     @Post('login')
-    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     login(@Body() dto: LoginDto) {
         return this._userService.login(dto);

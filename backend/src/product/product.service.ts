@@ -28,8 +28,11 @@ export class ProductService {
         return product;
     }
 
-    async products() {
-        return this._prisma.product.findMany()
+    async products(page: number, limit: number) {
+        return this._prisma.product.findMany({
+            skip: Number(page),
+            take: Number(limit)
+        });
     }
 
     async update(id: string, dto: UpdateProductDto) {

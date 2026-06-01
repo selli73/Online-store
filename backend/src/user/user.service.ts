@@ -16,18 +16,19 @@ export class UserService {
         if (existingUser) {
             throw new BadRequestException('Пользователь с таким email уже есть');
         }
-
+        
         const hashPassword = await bcrypt.hash(dto.password, 10)
         const user = await this._prisma.user.create({
             data: {
                 email: dto.email,
                 password: hashPassword,
                 name: dto.name,
-                phone: dto.phone
+                phone: dto.phone,
+                role: dto.role
             }
         });
         
-        return this.generateToken(user.id, user.email);
+        return this.generateToken(user.id, user.email, user.role);
     }
 
 
@@ -46,13 +47,14 @@ export class UserService {
             throw new BadRequestException('Логин или пароль неверный');
         }
 
-       return this.generateToken(user.id, user.email);
+       return this.generateToken(user.id, user.email, user.role);
     }
 
-    private generateToken(userId: string, email: string) {
+    private generateToken(userId: string, email: string, role: string) {
         const payload = {
             sub: userId,
-            email
+            email,
+            role
         }
         return {
             access_token: this._jwtService.sign(payload)

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
-
-export class LoginDto {
+import { Role as PrismaRole } from '@prisma/client';
+export class LoginDto {  
     @ApiProperty({ description: 'user email address', example: 'jonJones@gmail.com' })
     @IsEmail()
     email!: string;
@@ -22,4 +22,7 @@ export class RegisterDto extends LoginDto {
     @IsOptional()
     @ApiProperty({  description: 'Phone user', example: '+7 (9**) ***-**-**'})
     phone?: string;
+
+    @ApiProperty({  description: 'Role user', example: 'User or admin'})
+    role!: PrismaRole
 }
