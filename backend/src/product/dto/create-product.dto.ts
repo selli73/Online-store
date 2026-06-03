@@ -1,5 +1,5 @@
 import { PartialType } from "@nestjs/swagger"
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString, Min } from "class-validator"
 import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateProductDto {
@@ -11,6 +11,11 @@ export class CreateProductDto {
     @ApiProperty({ description: 'Product price'})
     @IsNumber()
     price!: number
+
+    @ApiProperty({ description: 'Product quantity'})
+    @IsNumber()
+    @Min(1)
+    quantity!: number
 
     @ApiProperty({ description: 'Product applications'})
     @IsString()

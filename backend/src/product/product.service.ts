@@ -19,6 +19,7 @@ export class ProductService {
             data: {
                 name: dto.name,
                 price: dto.price,
+                stock: dto.quantity,
                 applicabilityToCars: dto.applicabilityToCars,
                 partType: dto.partType,
                 manufacturer: dto.maufacturer,
@@ -30,8 +31,9 @@ export class ProductService {
 
     async products(page: number, limit: number) {
         return this._prisma.product.findMany({
-            skip: Number(page),
-            take: Number(limit)
+            skip: (page - 1) * limit,
+            take: limit,
+            orderBy: { name: 'asc' }
         });
     }
 
@@ -51,7 +53,6 @@ export class ProductService {
     }
 
     async delete(id: string) {
-
         const existingProduct = await this._prisma.product.findUnique({ where: { id } });
 
         if (!existingProduct) {

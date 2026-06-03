@@ -18,6 +18,7 @@ model User {
   name      String?
   phone     String?
   role      Role   @default(USER)
+  orders    Order[]
   createdAt DateTime @default(now())
 }
 
@@ -26,12 +27,40 @@ enum Role {
   ADMIN
 }
 
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  SHIPPED
+}
+
 model Product {
   id    String @id @default(uuid())
   name  String @unique
   price Int
+  stock Int
   applicabilityToCars String
   partType String
   manufacturer String?
   description String?
+  orderItems OrderItem[]
+}
+
+model Order {
+  id String @id @default(uuid())
+  total Float
+  status OrderStatus @default(PENDING)
+  items OrderItem[]
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+  quantity Int
+  price Float
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
+  productId String
+  product Product @relation(fields: [productId], references: [id])
 }
