@@ -1,7 +1,7 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwt } from '../user.constants';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 // с помощью библиотеки @nestjs/passport вы настраиваете стратегию Passport, расширяя PassportStrategy класс
 // с помощью библиотеки passport-jwt она предоставляет тип стратегии, а в данном случае тип Jwt Strategy. + нужна библиотека @types/passport-jwt.
@@ -27,6 +27,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {  // Passpor
     // Результат validate() кладётся в request.user
     //Контроллер возвращает данные пользователя.
     validate(payload) {
+
+        if (!payload.sub || !payload.email || !payload.role) {
+            throw new BadRequestException('Недействительный токен')
+        }
+
         return { userId: payload.sub, email: payload.email, role: payload.role };
         // Passport создаст user объект на основе возвращенного значения нашего validate() метода и добавит его в качестве свойства 
         // к объекту request

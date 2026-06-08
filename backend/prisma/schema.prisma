@@ -12,14 +12,25 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
-  email     String @unique 
-  password  String
-  name      String?
-  phone     String?
-  role      Role   @default(USER)
-  orders    Order[]
-  createdAt DateTime @default(now())
+  id                 String @id @default(uuid())
+  email              String @unique 
+  password           String
+  name               String?
+  phone              String?
+  role               Role   @default(USER)
+  orders             Order[]
+  passwordResetCode PasswordResetCode?
+  createdAt          DateTime @default(now())
+}
+
+model PasswordResetCode {
+  id         String @id @default(uuid())
+  userId     String @unique
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  expiryDate DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 enum Role {

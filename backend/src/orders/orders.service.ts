@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { OrderStatus } from '@prisma/client';
 
 @Injectable()
 export class OrdersService {
@@ -38,5 +39,27 @@ export class OrdersService {
 
     async getOrders(userId: string) {
         return this._prisma.order.findMany({ where: { userId } });
+    }
+
+    async payOrder(orderId: string, userId: string) {
+        const order = await this._prisma.order.findUnique({
+            where: { id: orderId }
+        });
+        
+        if (!order) {
+            throw new NotFoundException('Заказ не найден');
+        }
+
+        if (order.userId !== userId) {
+            throw new ForbiddenException('Это не ваш заказ');
+        }
+
+        if (order.status !== OrderStatus.PENDING) {
+            throw new BadRequestException('Это заказ оплачен или отменен');
+        }
+
+        await new Promise((resolve, reject) => setTimeout(resolve, 2000));
+
+        return this._prisma.order.update({ where: { id: orderId }, data: { status: OrderStatus.PAID } });
     }
 }
