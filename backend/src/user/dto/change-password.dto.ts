@@ -5,7 +5,7 @@ import { IsEmail, IsString, Min, MinLength } from 'class-validator';
 
 export class ChangePasswordDto {
     @IsString()
-    @Min(8)
+    @MinLength(8)
     @ApiProperty({ description: 'old password', example: '12345678' })
     oldPassword!: string;
 

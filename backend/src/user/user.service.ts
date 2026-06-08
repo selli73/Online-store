@@ -85,10 +85,16 @@ export class UserService {
 
         const newhashedPassword = await bcrypt.hash(newPassword, 10)
         
-        return this._prisma.user.update({
+        const updateData = await this._prisma.user.update({
             where: { id: existingUser.id },
             data: { password: newhashedPassword }
         });
+
+        const {
+            password,...objectWithoutPassword
+        } = updateData;
+
+        return objectWithoutPassword;
     }
 
     async forgotPassword(email: string) {
