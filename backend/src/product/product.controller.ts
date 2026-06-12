@@ -1,4 +1,4 @@
-import { Controller, Body, Query, Param, Get, Post, Put, Delete, UseGuards, ParseIntPipe, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, BadRequestException } from '@nestjs/common';
+import { Controller, Body, Query, Param, Get, Post, Put, Delete, UseGuards, ParseIntPipe, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto, UpdateProductDto } from './dto/create-product.dto';
 import { ApiResponse, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
@@ -9,9 +9,8 @@ import { Role } from '@prisma/client';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 } from 'uuid';
-import { extname, join } from 'node:path';
+import { extname } from 'node:path';
 import { FileUploadDto } from './dto/file-upload.dto';
-import fs from 'node:fs/promises';
 
 @Controller('product') 
 @UseGuards(JwtAuthGuard, RolesGuard) @ApiBearerAuth()
