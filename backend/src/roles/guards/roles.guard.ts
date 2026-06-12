@@ -22,7 +22,6 @@ export class RolesGuard implements CanActivate {
         const user = request.user;  // или можно использовать так: const{ user } = request Она берёт свойство user из объекта request и создаёт переменную с именем user.
         // в переменной user - лежат данные текущего пользователя: такие как id, email, roles и т.д.
         // предикат это функция, которая возвращает true или false
-        
         return requiredRoles.some((role) => user?.role?.includes(role));
     }
 }

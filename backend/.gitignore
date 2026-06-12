@@ -60,3 +60,4 @@ bun.lock
 /src/user/user.constants.ts
 /src/user/informationJWT.txt
 package-lock.json
+/uploads

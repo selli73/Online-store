@@ -20,6 +20,7 @@ model User {
   role               Role   @default(USER)
   orders             Order[]
   passwordResetCode PasswordResetCode?
+  reviews           Review[]
   createdAt          DateTime @default(now())
 }
 
@@ -46,32 +47,48 @@ enum OrderStatus {
 }
 
 model Product {
-  id    String @id @default(uuid())
-  name  String @unique
-  price Int
-  stock Int
+  id                  String @id @default(uuid())
+  name                String @unique
+  price               Int
+  stock               Int
   applicabilityToCars String
-  partType String
-  manufacturer String?
-  description String?
-  orderItems OrderItem[]
+  partType            String
+  manufacturer        String?
+  description         String?
+  imageUrl            String?
+  orderItems          OrderItem[]
+  review              Review[]
+  rating              Float @default(0)
+}
+
+model Review {
+  id        String @id @default(uuid())
+  rating    Int
+  text      String?
+  userId    String
+  user User @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
 }
 
 model Order {
-  id String @id @default(uuid())
-  total Float
+  id     String @id @default(uuid())
+  total  Float
   status OrderStatus @default(PENDING)
-  items OrderItem[]
+  items  OrderItem[]
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
-  id String @id @default(uuid())
-  quantity Int
-  price Float
-  orderId String
-  order Order @relation(fields: [orderId], references: [id])
+  id        String @id @default(uuid())
+  quantity  Int
+  price     Float
+  orderId   String
+  order     Order @relation(fields: [orderId], references: [id])
   productId String
-  product Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }

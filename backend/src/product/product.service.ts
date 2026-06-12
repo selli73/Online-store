@@ -38,13 +38,7 @@ export class ProductService {
     }
 
     async update(id: string, dto: UpdateProductDto) {
-        const existingProduct = await this._prisma.product.findUnique({
-            where: { id }
-        });
-
-        if (!existingProduct) {
-            throw new NotFoundException(`This product does not exist`);
-        }
+        await this.findOne(id);
 
         return this._prisma.product.update({
             where: { id },
@@ -53,13 +47,29 @@ export class ProductService {
     }
 
     async delete(id: string) {
+        await this.findOne(id);
+
+        return this._prisma.product.delete({
+            where: { id }
+        });
+    }
+
+    async findOne(id: string) {
         const existingProduct = await this._prisma.product.findUnique({ where: { id } });
 
         if (!existingProduct) {
             throw new NotFoundException('This product does not exist');
         }
-        return this._prisma.product.delete({
-            where: { id }
+
+        return existingProduct;
+    }
+
+    async uploadProductImage(id: string, imageUrl: string) {
+        await this.findOne(id);
+
+        return this._prisma.product.update({
+            where: { id },
+            data: { imageUrl }
         });
     }
 }
