@@ -3,13 +3,15 @@ import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import type { IJwtUserRequest } from '../user/typings';
 import { JwtAuthGuard } from '../user/guards/jwt-auth.guard';
+import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard) @ApiBearerAuth()
+  @ApiOperation({  summary: 'Posting a product review' }) @ApiResponse({ status: 200, description: 'The review has been succeefully published' })  @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Req() req: IJwtUserRequest, @Body() createReviewDto: CreateReviewDto) {
     return this.reviewsService.create(req.user.userId, createReviewDto);
   }
