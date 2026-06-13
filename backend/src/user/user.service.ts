@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto, LoginDto } from './dto/create-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import  bcrypt  from 'bcrypt';
@@ -45,13 +45,13 @@ export class UserService {
         });
 
         if (!user) {
-            throw new BadRequestException('Логин или пароль неверный');
+            throw new UnauthorizedException('Логин или пароль неверный');
         }
 
         const isPasswordValid = await bcrypt.compare(dto.password, user.password);
 
         if (!isPasswordValid) {
-            throw new BadRequestException('Логин или пароль неверный');
+            throw new UnauthorizedException('Логин или пароль неверный');
         }
 
        return this.generateToken(user.id, user.email, user.role);

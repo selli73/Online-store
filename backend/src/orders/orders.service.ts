@@ -2,10 +2,11 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderStatus } from '@prisma/client';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class OrdersService {
-    constructor(private _prisma: PrismaService) {}
+    constructor(private _prisma: PrismaService, private _configService: ConfigService) {}
 
     async create(userId: string, dto: CreateOrderDto) {
         if (dto.items.length === 0)  {
@@ -61,5 +62,31 @@ export class OrdersService {
         await new Promise((resolve, reject) => setTimeout(resolve, 2000));
 
         return this._prisma.order.update({ where: { id: orderId }, data: { status: OrderStatus.PAID } });
+    }
+
+    async getPaymentDetails(orderId: string, userId: string) {
+        const order = await this._prisma.order.findUnique({
+            where: { id: orderId }
+        });
+
+        if (!order) {
+            throw new NotFoundException('Заказ не найден');
+        }
+
+        if (order.userId !== userId) {
+            throw new ForbiddenException('Это не ваш заказ');
+        }
+
+        if (order.status !== OrderStatus.PENDING) {
+            throw new BadRequestException('Заказ уже в обработке или оплачен');
+        }
+
+        return {
+            cardNumber: this._configService.getOrThrow('BANK_CARD_NUMBER'),
+            receiverName: this._configService.getOrThrow('BANK_RECEIVER_NAME'),
+            bankName: this._configService.getOrThrow('BANK_NAME'),
+            amountToPay: order.total,
+            instruction: `Обязательно укажите комментарий к переводу: заказ №${order.orderNumber}`
+        }
     }
 }

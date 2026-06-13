@@ -44,6 +44,11 @@ enum OrderStatus {
   PAID
   CANCELLED
   SHIPPED
+  AWAITING_CONFIRMATION
+}
+
+enum PaymentMethod {
+  MANUAL_TRANSFER
 }
 
 model Product {
@@ -76,8 +81,10 @@ model Review {
 
 model Order {
   id     String @id @default(uuid())
+  orderNumber Int @unique @default(autoincrement())
   total  Float
   status OrderStatus @default(PENDING)
+  paymentMethod PaymentMethod @default(MANUAL_TRANSFER)
   items  OrderItem[]
   userId String
   user   User @relation(fields: [userId], references: [id])
