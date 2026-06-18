@@ -37,7 +37,6 @@ export class ProductService {
         const cacheData = await this._cacheManager.get<Product[]>(cacheKey);
 
         if (cacheData) {
-            console.log(cacheData[0]);
             return cacheData;
         }
 
@@ -59,6 +58,14 @@ export class ProductService {
             return [];
         }
         
+        const cacheKey = `searchProducts:${query.trim()}`;
+        const cacheData= await this._cacheManager.get<Product[]>(cacheKey);
+
+        if (cacheData) {
+            console.log(cacheData);
+            return cacheData;
+        }
+
         const products = await this._prisma.product.findMany({
             where: {
                 AND: splitName.map((word) =>  ({
@@ -101,6 +108,8 @@ export class ProductService {
         if (!products) {
             throw new NotFoundException('Not found product');
         }
+
+        await this._cacheManager.set(cacheKey, products, 1000*60*60)
 
         return products;
     }
