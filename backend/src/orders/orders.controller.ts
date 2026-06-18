@@ -4,6 +4,9 @@ import { JwtAuthGuard } from '../user/guards/jwt-auth.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
 import type { IJwtUserRequest } from '../user/typings';
+import { Roles } from '../roles/decorators/roles.decorator';
+import { Role } from '@prisma/client';
+import { RolesGuard } from '../roles/guards/roles.guard';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard) @ApiBearerAuth() @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -22,15 +25,20 @@ export class OrdersController {
       return this.ordersService.create(req.user.userId, dto);
     }
 
-    @Patch(':orderId/pay')
+    @Patch(':orderId/notify-payment')
     @ApiOperation({ summary: 'Payment for the order' }) @ApiResponse({ status: 200, description: 'Order paid' })
     payOrder(@Param('orderId') orderId: string, @Req() req: IJwtUserRequest) {
-      return this.ordersService.payOrder(orderId, req.user.userId);
+      return this.ordersService.notifyManualPayment(orderId, req.user.userId);
     }
 
     @Get(':orderId/payment-details')
     @ApiOperation({ summary: 'Receiving payment details' }) @ApiResponse({ status: 200, description: 'Payment details have been successfully received' })
     getPaymentDetails(@Param('orderId') orderId: string , @Req() req: IJwtUserRequest) {
       return this.ordersService.getPaymentDetails(orderId, req.user.userId);
+    }
+
+    @Patch(':orderId/confirm-payment') @UseGuards(RolesGuard) @Roles(Role.ADMIN) 
+    confirmPayment(@Param('orderId') orderId: string) {
+      this.ordersService.confirmPayment(orderId);
     }
 }

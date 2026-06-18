@@ -25,6 +25,13 @@ export class ProductController {
         return this._productService.products(page, limit);
     }
 
+    @Get('search')
+    @Roles(Role.ADMIN, Role.USER)
+    @ApiOperation({ summary: 'Search products by filter' }) @ApiResponse({ status: 200, description: 'Products received' }) @ApiResponse({ status: 404, description: 'Not found' })
+    searchProducts(@Query('query') name: string) {
+        return this._productService.searchProducts(name);
+    }
+
     @Post() 
     @Roles(Role.ADMIN) 
     @ApiOperation({ summary: 'Product creation' }) @ApiResponse({ status: 201, description: 'Product created' })

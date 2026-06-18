@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus, PaymentMethod } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class OrdersService {
         return this._prisma.order.findMany({ where: { userId } });
     }
 
-    async payOrder(orderId: string, userId: string) {
+    async notifyManualPayment(orderId: string, userId: string) {
         const order = await this._prisma.order.findUnique({
             where: { id: orderId }
         });
@@ -59,9 +59,7 @@ export class OrdersService {
             throw new BadRequestException('Это заказ оплачен или отменен');
         }
 
-        await new Promise((resolve, reject) => setTimeout(resolve, 2000));
-
-        return this._prisma.order.update({ where: { id: orderId }, data: { status: OrderStatus.PAID } });
+        return this._prisma.order.update({ where: { id: orderId }, data: { status: OrderStatus.AWAITING_CONFIRMATION} });
     }
 
     async getPaymentDetails(orderId: string, userId: string) {
@@ -88,5 +86,22 @@ export class OrdersService {
             amountToPay: order.total,
             instruction: `Обязательно укажите комментарий к переводу: заказ №${order.orderNumber}`
         }
+    }
+
+    async confirmPayment(orderId: string) {
+        const order = await this._prisma.order.findUnique({ where: { id: orderId } });
+
+        if (!order) {
+            throw new NotFoundException('Ордел был не найден');
+        }
+
+        if (order.status !== OrderStatus.AWAITING_CONFIRMATION) {
+            throw new BadRequestException('Этот заказ не ожидает подтверждения оплаты');
+        }
+
+        return this._prisma.order.update({
+            where: { id: orderId },
+            data: { status: OrderStatus.PAID }
+        });
     }
 }
