@@ -8,7 +8,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }))
-  app.enableCors({origin: 'http://localhost:5173', credentials: true})
   const config = new DocumentBuilder()  // помогает описать базовую информацию об API: название, описание, версию и т.д.
     .setTitle('Auto Parts Store')
     .setDescription('API documentation for the store')
