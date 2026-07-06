@@ -7,7 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
-  }))
+  }));
+  app.enableCors({
+    credentials: true,
+    origin: 'http://localhost:5173'
+  })
   const config = new DocumentBuilder()  // помогает описать базовую информацию об API: название, описание, версию и т.д.
     .setTitle('Auto Parts Store')
     .setDescription('API documentation for the store')
