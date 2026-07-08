@@ -33,6 +33,33 @@ export default class Store {
             console.log(e);
         }
     }
+    
+    async forgotPassword(email: string) {
+        try {
+            const response = await AuthService.forgotPassword(email);
+            return response;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    async verifyResetCode(email: string, code: string) {
+        try {
+            const response = await AuthService.verifyResetCode(email, code);
+            return response;
+        } catch(error) {
+            console.log(error);
+        }
+    }
+
+    async resetPassword(token: string, newPassword: string) {
+        try {
+            const response = await AuthService.resetPassword(token, newPassword);
+            return response;
+        } catch(error) {
+            console.log(error);
+        }
+    }
 
     async logout() {
         try {

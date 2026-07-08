@@ -19,6 +19,30 @@ export default class AuthService {
         });
     }
 
+    static async forgotPassword(email: string) {
+        return api.post('/user/forgot-password', {
+            email
+        });
+    }
+
+    static async verifyResetCode(email: string, code: string) {
+        return api.post('/user/verify-reset-code', {
+            email,
+            code
+        });
+    }
+
+    static async resetPassword(token: string, newPassword: string) {
+        return api.post('/user/reset-password', {
+            newPassword
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
     static async logout(): Promise<void>{
         return api.post('/user/logout');
     }
