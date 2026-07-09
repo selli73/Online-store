@@ -7,6 +7,6 @@ const api = axios.create({
     baseURL: API_URL
 });
 
-
+api.interceptors.request()
 
 export default api;

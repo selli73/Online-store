@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { LoginForm } from "./components/LoginForm";
-import { RegisterForm } from "./components/RegisterForm";
-import RecoveryPasswordForm from "./components/ForgotPassword/RecoveryPasswordForm";
+import { LoginForm } from "./components/Authorization/LoginForm";
+import { RegisterForm } from "./components/Authorization/RegisterForm";
+import RecoveryPasswordForm from './components/Authorization/ForgotPassword/RecoveryPasswordForm';
+import ProfileMe from "./components/ProfileMe";
 
 export default function App() {
   
@@ -10,7 +11,8 @@ export default function App() {
       <Routes>
         <Route path='/login' element={<LoginForm />} />
         <Route path='/register' element={<RegisterForm />} />
-        <Route path='forgot-password' element={<RecoveryPasswordForm />} />
+        <Route path='/recovery-password' element={<RecoveryPasswordForm />} />
+        <Route path='/profile/me' element={<ProfileMe />} />
       </Routes>
     </BrowserRouter>
   )

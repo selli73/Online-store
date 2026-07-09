@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Context } from "../../main";
+import { Context } from "../../../main";
 
 type StepEmailProps = {
     next: (email: string) => void

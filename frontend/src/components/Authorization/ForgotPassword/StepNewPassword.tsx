@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { Context } from "../../main";
+import { Context } from "../../../main";
 
 type StepNewPasswordProps = {
     token: string;
@@ -19,7 +19,7 @@ export default function StepNewPassword({ token, onChanged }: StepNewPasswordPro
                 return;
             }
             console.log('StepNewPassword', token);
-            await store.resetPassword(token, newPassword);await store.resetPassword(token, newPassword);
+            await store.resetPassword(token, newPassword);
             onChanged();
             
         } catch(error) {
