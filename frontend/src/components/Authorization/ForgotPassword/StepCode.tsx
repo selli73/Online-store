@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import { Context } from "../../../main";
+import ErrorMessage from "../../ErrorMessage";
 
 type StepCodeProps = {
     email: string;
@@ -8,15 +9,16 @@ type StepCodeProps = {
 
 export default function StepCode({ email, onSuccess }: StepCodeProps) {
     
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState<string>('');
+    const [error, setError] = useState<string>('');
     const { store } = useContext(Context);
     
     async function handleButtonClick() {
         try {
-            await store.verifyResetCode(email, code);
+            const response = await store.verifyResetCode(email, code);
             onSuccess();
-        } catch(error) {
-            console.log(error);
+        } catch(error: any) {
+            setError(error.response.data.message || 'Что-то пошло не так');
         }
     }
 
@@ -24,6 +26,9 @@ export default function StepCode({ email, onSuccess }: StepCodeProps) {
     return (
         <div>
             <h2>Восстановление пароля</h2>
+            {
+                error && <ErrorMessage errorMessage={error} />
+            }
             <input type='text' placeholder='code' value={code} onChange={(event) => setCode(event.target.value)} />
             <button onClick={handleButtonClick}>Проверить</button>
         </div>

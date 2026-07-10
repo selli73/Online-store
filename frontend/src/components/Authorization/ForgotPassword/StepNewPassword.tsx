@@ -1,5 +1,6 @@
 import { useContext, useState } from "react"
 import { Context } from "../../../main";
+import ErrorMessage from "../../ErrorMessage";
 
 type StepNewPasswordProps = {
     onChanged: () => void
@@ -7,8 +8,9 @@ type StepNewPasswordProps = {
 
 export default function StepNewPassword({ onChanged }: StepNewPasswordProps) {
     
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [error, setError] = useState<string>('')
     const { store } = useContext(Context);
     
     async function handleButtonClick() {
@@ -17,16 +19,20 @@ export default function StepNewPassword({ onChanged }: StepNewPasswordProps) {
                 console.log('Пароли не совпадают');
                 return;
             }
-            const response = await store.resetPassword(newPassword);
+            await store.resetPassword(newPassword);
             onChanged();
             
-        } catch(error) {
-            console.log(error);
+        } catch(error: any) {
+            setError(error.response.data.message || 'Что-то пошло не так');
         }
     }
 
     return (
         <div>
+            <h2>Восстановление пароля</h2>
+            {
+                error && <ErrorMessage errorMessage={error} />
+            }
             <input type='password' placeholder='введите пароль' value={newPassword} onChange={(event) => setNewPassword(event.target.value)}/>
             <input type='password' placeholder='подтвердите пароль' value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}/>
             <button onClick={handleButtonClick}>Сохранить</button>

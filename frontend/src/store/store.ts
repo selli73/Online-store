@@ -45,7 +45,7 @@ export default class Store {
         try {
             const response = await AuthService.verifyResetCode(email, code);
             sessionStorage.setItem('resetToken', response.data.resetToken);
-            console.log('ResetToken: ', response.data.resetToken);
+            console.log('Пошли дальше');
         } catch(error) {
             throw error;
         }

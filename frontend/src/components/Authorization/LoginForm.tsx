@@ -42,7 +42,10 @@ export const LoginForm = () => {
                 }}/>
             </div>
             <div>
-                <input id='password' type='password' placeholder='password' value={password} onChange={(event) => setPassword(event.target.value)}></input>
+                <input id='password' type='password' placeholder='password' value={password} onChange={(event) => {
+                    setPassword(event.target.value);
+                    setError('');
+                }}></input>
             </div>
 
             <button type='submit' >Вход</button>
