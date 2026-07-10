@@ -14,23 +14,21 @@ export default class Store {
 
     async login(email: string, password: string) {
         try {
-            const response = await AuthService.login(email, password);
-            localStorage.setItem('token', response.data.access_token);
+            const response = await AuthService.login(email, password);            
+            localStorage.setItem('access_token', response.data.access_token);            
             this.setAuth(true);
-            return response;            
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            throw error;
         }
     }
 
     async register(email: string, password: string, name: string, phone: string) {
         try {
             const response = await AuthService.register(email, password, name, phone);
-            console.log(response);
-            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('access_token', response.data.access_token);
             this.setAuth(true);
-        } catch(e) {
-            console.log(e);
+        } catch(error) {
+            throw error;
         }
     }
     
@@ -39,35 +37,36 @@ export default class Store {
             const response = await AuthService.forgotPassword(email);
             return response;
         } catch(error) {
-            console.log(error);
+            throw error;
         }
     }
 
     async verifyResetCode(email: string, code: string) {
         try {
             const response = await AuthService.verifyResetCode(email, code);
-            return response;
+            sessionStorage.setItem('resetToken', response.data.resetToken);
+            console.log('ResetToken: ', response.data.resetToken);
         } catch(error) {
-            console.log(error);
+            throw error;
         }
     }
 
-    async resetPassword(token: string, newPassword: string) {
+    async resetPassword(newPassword: string) {
         try {
-            const response = await AuthService.resetPassword(token, newPassword);
-            return response;
+            const response = await AuthService.resetPassword(newPassword);
+            return response.statusText;
         } catch(error) {
-            console.log(error);
+            throw error;
         }
     }
 
     async logout() {
         try {
-            const response = await AuthService.logout();
-            localStorage.removeItem('token');
+            await AuthService.logout();
+            localStorage.removeItem('access_token');
             this.setAuth(false);
-        } catch(e) {
-            console.log(e);
+        } catch(error) {
+            throw error;
         }
     }
 }

@@ -32,13 +32,13 @@ export default class AuthService {
         });
     }
 
-    static async resetPassword(token: string, newPassword: string) {
+    static async resetPassword(newPassword: string) {
         return api.post('/user/reset-password', {
             newPassword
         },
         {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${sessionStorage.getItem('resetToken')}`
             }
         });
     }

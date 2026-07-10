@@ -7,15 +7,24 @@ export const RegisterForm = () => {
     const [password, setPassword] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
+    const [error, setError] = useState<string>('')
     const {store} = useContext(Context);
     const navigate = useNavigate();
 
     console.log('a')
 
-    function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
         
-        store.register(email, password, name, phone)
+        try {
+            await store.register(email, password, name, phone);
+
+            if (store.isAuth) {
+                navigate('/profile/me');
+            }
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (

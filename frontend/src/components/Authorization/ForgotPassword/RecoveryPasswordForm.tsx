@@ -8,7 +8,6 @@ type statusPasswordType = 'unchanged' | 'changed';
 export default function RecoveryPasswordForm() {
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
-    const [token, setToken] = useState('');
     const [status, setStatus] = useState<statusPasswordType>('unchanged');
     
 
@@ -19,9 +18,7 @@ export default function RecoveryPasswordForm() {
         setStep(2);
     }
 
-    function onSuccess(generatedToken: string) {
-        setToken(generatedToken);
-        console.log('токен сохранился', generatedToken);
+    function onSuccess() {
         setStep(3);
     }
 
@@ -44,7 +41,7 @@ export default function RecoveryPasswordForm() {
         }
         {
             step === 3 && (
-                <StepNewPassword token={token} onChanged={eventChangedPassword}/>
+                <StepNewPassword onChanged={eventChangedPassword}/>
             )
         }
         {

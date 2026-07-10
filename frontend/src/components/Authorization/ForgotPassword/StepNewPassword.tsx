@@ -2,11 +2,10 @@ import { useContext, useState } from "react"
 import { Context } from "../../../main";
 
 type StepNewPasswordProps = {
-    token: string;
     onChanged: () => void
 }
 
-export default function StepNewPassword({ token, onChanged }: StepNewPasswordProps) {
+export default function StepNewPassword({ onChanged }: StepNewPasswordProps) {
     
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,8 +17,7 @@ export default function StepNewPassword({ token, onChanged }: StepNewPasswordPro
                 console.log('Пароли не совпадают');
                 return;
             }
-            console.log('StepNewPassword', token);
-            await store.resetPassword(token, newPassword);
+            const response = await store.resetPassword(newPassword);
             onChanged();
             
         } catch(error) {

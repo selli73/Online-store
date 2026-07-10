@@ -3,7 +3,7 @@ import { Context } from "../../../main";
 
 type StepCodeProps = {
     email: string;
-    onSuccess: (token: string) => void
+    onSuccess: () => void
 }
 
 export default function StepCode({ email, onSuccess }: StepCodeProps) {
@@ -13,12 +13,8 @@ export default function StepCode({ email, onSuccess }: StepCodeProps) {
     
     async function handleButtonClick() {
         try {
-            const response = await store.verifyResetCode(email, code);
-            const { resetToken } = response!.data;
-            console.log('step code: ', resetToken);
-            if (resetToken) {
-                onSuccess(resetToken);
-            }
+            await store.verifyResetCode(email, code);
+            onSuccess();
         } catch(error) {
             console.log(error);
         }
