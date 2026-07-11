@@ -12,7 +12,6 @@ export const RegisterForm = () => {
     const {store} = useContext(Context);
     const navigate = useNavigate();
 
-    console.log('a')
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();

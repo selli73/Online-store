@@ -43,7 +43,7 @@ export default class AuthService {
         });
     }
 
-    static async logout(): Promise<void>{
-        return api.post('/user/logout');
+    static async profileMe() {
+        return api.get('/profile/me');
     }
 }

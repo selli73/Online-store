@@ -1,7 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import AuthService from "../services/AuthService";
+import type { IUser } from "../models/IUser";
 
 export default class Store {
+    user = {} as IUser;
     isAuth = false;
 
     constructor() {
@@ -10,6 +12,10 @@ export default class Store {
 
     setAuth(bool: boolean) {
         this.isAuth = bool;
+    }
+
+    setUser(user: IUser) {
+        this.user = user;
     }
 
     async login(email: string, password: string) {
@@ -60,11 +66,23 @@ export default class Store {
         }
     }
 
+    async profileMe() {
+        try {
+            const response = await AuthService.profileMe();
+            this.setUser(response.data.user);
+            this.setAuth(true);
+        } catch(error) {
+            this.setAuth(false);
+            localStorage.removeItem('access_token');
+            throw error;
+        }
+    }
+
     async logout() {
         try {
-            await AuthService.logout();
             localStorage.removeItem('access_token');
             this.setAuth(false);
+            this.setUser({} as IUser);
         } catch(error) {
             throw error;
         }
