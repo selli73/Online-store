@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 import './auth.css';
 import { Link } from "react-router-dom";
-import ErrorMessage from "../ErrorMessage";
-import '../error.css';
+import ErrorMessage from "../Error/ErrorMessage";
+import '../Error/error.css';
 
 export const LoginForm = () => {
     const [email, setEmail] = useState<string>('');

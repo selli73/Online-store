@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { Context } from "../../../main";
-import ErrorMessage from "../../ErrorMessage";
+import ErrorMessage from "../../Error/ErrorMessage";
 
 type StepEmailProps = {
     next: (email: string) => void

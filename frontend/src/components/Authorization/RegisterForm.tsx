@@ -1,7 +1,7 @@
 import { useContext, useState, type FormEvent } from "react"
 import { Context } from "../../main";
 import { useNavigate } from "react-router-dom";
-import ErrorMessage from "../ErrorMessage";
+import ErrorMessage from "../Error/ErrorMessage";
 
 export const RegisterForm = () => {
     const [email, setEmail] = useState<string>('');

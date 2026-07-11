@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LoginForm } from "./components/Authorization/LoginForm";
 import { RegisterForm } from "./components/Authorization/RegisterForm";
 import RecoveryPasswordForm from './components/Authorization/ForgotPassword/RecoveryPasswordForm';
-import {ProfileMe} from "./components/ProfileMe";
+import {ProfileMe} from "./components/Profile/ProfileMe";
 
 export default function App() {
   

@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState, type FormEvent } from "react"
-import { Context } from "../main";
+import { Context } from "../../main";
 import './profile.css';
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "../Error/ErrorMessage";
 
 export const ProfileMe = observer(() => {
     const { store } = useContext(Context);
