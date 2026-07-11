@@ -1,4 +1,4 @@
-import { createContext, StrictMode } from 'react'
+import { createContext } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import Store from './store/store.ts'  

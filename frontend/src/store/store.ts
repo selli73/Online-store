@@ -38,10 +38,19 @@ export default class Store {
         }
     }
     
+    async changePassword(oldPassword: string, newPassword: string) {
+        try {
+            const response = await AuthService.changePassword(oldPassword, newPassword);
+            return response;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
     async forgotPassword(email: string) {
         try {
-            const response = await AuthService.forgotPassword(email);
-            return response;
+            return AuthService.forgotPassword(email);
         } catch(error) {
             throw error;
         }
@@ -51,7 +60,6 @@ export default class Store {
         try {
             const response = await AuthService.verifyResetCode(email, code);
             sessionStorage.setItem('resetToken', response.data.resetToken);
-            console.log('Пошли дальше');
         } catch(error) {
             throw error;
         }

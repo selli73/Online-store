@@ -19,6 +19,13 @@ export default class AuthService {
         });
     }
 
+    static async changePassword(oldPassword: string, newPassword: string) {
+        return api.put('/user/change-password', {
+            oldPassword,
+            newPassword
+        });
+    }
+
     static async forgotPassword(email: string) {
         return api.post('/user/forgot-password', {
             email
