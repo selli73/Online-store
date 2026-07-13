@@ -53,4 +53,8 @@ export default class AuthService {
     static async profileMe() {
         return api.get('/profile/me');
     }
+
+    static async getAllProducts(page: number, limit: number) {
+        return api.get(`/product/all?page=${page}&limit=${limit}`);
+    }
 }

@@ -21,7 +21,7 @@ export const LoginForm = () => {
             await store.login(email, password);
             
             if (store.isAuth) {
-                navigate('/profile/me');
+                navigate('/products');
             }
         } catch(error: any) {
             setError(error.response.data.message || 'Что-то пошло не так');

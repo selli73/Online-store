@@ -1,10 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import AuthService from "../services/AuthService";
 import type { IUser } from "../models/IUser";
+import type IProduct from "../models/IProduct";
 
 export default class Store {
     user = {} as IUser;
     isAuth = false;
+    products: IProduct[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -16,6 +18,10 @@ export default class Store {
 
     setUser(user: IUser) {
         this.user = user;
+    }
+
+    setProducts(products: IProduct[]) {
+        this.products = products;
     }
 
     async login(email: string, password: string) {
@@ -91,6 +97,15 @@ export default class Store {
             localStorage.removeItem('access_token');
             this.setAuth(false);
             this.setUser({} as IUser);
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    async getAllProducts(page: number, limit: number) {
+        try {
+            const response = await AuthService.getAllProducts(page, limit);
+            this.setProducts(response.data);
         } catch(error) {
             throw error;
         }
