@@ -13,7 +13,7 @@ import KeyvRedis from '@keyv/redis'
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }), PrismaModule, UserModule, ProductModule, OrdersModule
-    , MailModule, ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', 'uploads'), serveRoot: '/uploads/' }), ReviewsModule,
+    , MailModule, ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', '..', 'uploads'), serveRoot: '/uploads/' }), ReviewsModule,
     CacheModule.register({
       isGlobal: true,
       stores: [new KeyvRedis('redis://localhost:6379')]

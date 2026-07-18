@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import ErrorMessage from "../Error/ErrorMessage";
 import './Products.css';
+import { API_URL } from "../../http";
 
 export default function Products() {
     
@@ -46,7 +47,7 @@ export default function Products() {
                 {
                     store.products.map(product => (
                         <div className='product-card'>
-                            <p>{product.imageUrl}</p>
+                            <img src={`${API_URL}${product.imageUrl}`} alt={product.name} className='product-image'></img>
                             <p>{product.price} руб.</p>
                             <h2>{product.name}</h2>                                                        
                             <p className='product-rating'>
