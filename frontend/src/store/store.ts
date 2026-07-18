@@ -7,6 +7,7 @@ export default class Store {
     user = {} as IUser;
     isAuth = false;
     products: IProduct[] = [];
+    totalPage: number = 0;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,6 +23,10 @@ export default class Store {
 
     setProducts(products: IProduct[]) {
         this.products = products;
+    }
+
+    setTotalPage(totalPage: number) {
+        this.totalPage = totalPage;
     }
 
     async login(email: string, password: string) {
@@ -105,7 +110,8 @@ export default class Store {
     async getAllProducts(page: number, limit: number) {
         try {
             const response = await AuthService.getAllProducts(page, limit);
-            this.setProducts(response.data);
+            this.setProducts(response.data.products);
+            this.setTotalPage(response.data.totalPages);
         } catch(error) {
             throw error;
         }

@@ -34,21 +34,30 @@ export class ProductService {
 
     async products(page: number, limit: number) {
         const cacheKey = `productsAll:${page}:${limit}`;
-        const cacheData = await this._cacheManager.get<Product[]>(cacheKey);
-
+        await this._cacheManager.clear();
+        const cacheData = await this._cacheManager.get(cacheKey);
+    
         if (cacheData) {
             return cacheData;
         }
 
-        const products = await this._prisma.product.findMany({
+        const [products, total] = [
+            await this._prisma.product.findMany({
             skip: (page - 1) * limit,
             take: limit,
-            orderBy: { name: 'asc' }
-        });
-        
-        await this._cacheManager.set(cacheKey, products, 1000*60*60);
+            orderBy: { name: 'asc' }}),
+            await this._prisma.product.count()
+        ];
 
-        return products;
+        const result = {
+            products,
+            total,
+            totalPages: Math.ceil(total / limit)
+        }
+        
+        await this._cacheManager.set(cacheKey, result, 1000*60*60);
+
+        return result;
     }
 
     async searchProducts(query: string) {

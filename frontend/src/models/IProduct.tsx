@@ -2,7 +2,7 @@ export default interface IProduct {
     id: string;
     name: string;
     price: number;
-    quantity: number;
+    stock: number;
     applicabilityToCars: string;
     partType: string;
     maufacturer: string;

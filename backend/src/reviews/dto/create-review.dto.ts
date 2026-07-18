@@ -16,3 +16,7 @@ export class CreateReviewDto {
     @IsOptional()
     text?: string;
 }
+
+export class ChangeReviewDto extends CreateReviewDto {
+
+}

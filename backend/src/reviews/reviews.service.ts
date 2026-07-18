@@ -1,5 +1,5 @@
-import { ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ChangeReviewDto, CreateReviewDto } from './dto/create-review.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrderStatus } from '@prisma/client';
 
@@ -34,6 +34,46 @@ export class ReviewsService {
       data: {
         userId,
         productId: dto.productId,
+        rating: dto.rating,
+        text: dto.text
+      }
+    });
+
+    await this.updateProductAverageRating(dto.productId);
+
+    return review;
+  }
+
+  async change(userId: string, dto: ChangeReviewDto) {
+    const hasBought = await this._prisma.order.findFirst({
+      where: { userId, status: { in: [OrderStatus.PAID, OrderStatus.SHIPPED] }, items: { some: { productId: dto.productId } } }
+    });
+
+    if (!hasBought) {
+      throw new ForbiddenException('Вы можете оставить отзыв только на купленном товаре');
+    }
+
+    const existUserReview = await this._prisma.review.findUnique({
+      where: {
+        userId_productId: {
+          userId,
+          productId: dto.productId
+        }
+      }
+    });
+
+    if (!existUserReview) {
+      throw new NotFoundException('Вы не можете редактировать отзыв, так как его не существует')
+    }
+
+    const review = await this._prisma.review.update({
+      where: {
+        userId_productId: {
+          userId,
+          productId: dto.productId
+        }
+      },
+      data: {
         rating: dto.rating,
         text: dto.text
       }

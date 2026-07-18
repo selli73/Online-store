@@ -1,26 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import ErrorMessage from "../Error/ErrorMessage";
+import './Products.css';
 
 export default function Products() {
     
     const { store } = useContext(Context);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('')
-
+    const [error, setError] = useState('');
+    const [page, setPage] = useState(1);
+    const limit = 12;
+    console.log('app render');
     useEffect(() => {
         async function fetchProducts() {
             try {
-                await store.getAllProducts(1, 1);
+                setLoading(true);
+                await store.getAllProducts(page, limit);
             } catch(error: any) {
                 setError(error.response.data.message || 'Не удалось загрузить товары');
             } finally {
                 setLoading(false);
             }
         }
-
         fetchProducts();
-    }, []);
+    }, [page]);
+
+    if (loading) {
+        return ( <h2>Загрузка товаров...</h2> )
+    }
+    
     
     return (
         <div className='products-container'>
@@ -38,12 +46,32 @@ export default function Products() {
                 {
                     store.products.map(product => (
                         <div className='product-card'>
-                            <h2>{product.name}</h2>
-                            <p>{product.price}</p>
+                            <p>{product.imageUrl}</p>
+                            <p>{product.price} руб.</p>
+                            <h2>{product.name}</h2>                                                        
+                            <p className='product-rating'>
+                                <span className='star'>★</span>
+                                <span className="rating-value">{product.rating}</span>
+                            </p>
+                            <p className={product.stock > 0? 'in-stock' : 'out-stock'}>
+                                {product.stock > 0? '✔ В наличии' : '✖ Нет в наличии'}
+                            </p>
                         </div>
                     ))
                 }
 
+            </div>
+
+            <div className='pagination'>
+                <button disabled={page===1} onClick={() => setPage(page - 1)}>
+                    Назад
+                </button>
+
+                <span>Страница {page}</span>
+
+                <button disabled={page === store.totalPage} onClick={() => setPage(page + 1)}>
+                    Вперёд
+                </button>
             </div>
 
         </div>
