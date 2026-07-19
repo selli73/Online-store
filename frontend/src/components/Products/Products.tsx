@@ -3,6 +3,7 @@ import { Context } from "../../main";
 import ErrorMessage from "../Error/ErrorMessage";
 import './Products.css';
 import { API_URL } from "../../http";
+import { Link } from "react-router-dom";
 
 export default function Products() {
     
@@ -11,7 +12,7 @@ export default function Products() {
     const [error, setError] = useState('');
     const [page, setPage] = useState(1);
     const limit = 12;
-    console.log('app render');
+    
     useEffect(() => {
         async function fetchProducts() {
             try {
@@ -30,6 +31,7 @@ export default function Products() {
         return ( <h2>Загрузка товаров...</h2> )
     }
     
+    console.log(store.product);
     
     return (
         <div className='products-container'>
@@ -46,18 +48,20 @@ export default function Products() {
 
                 {
                     store.products.map(product => (
-                        <div className='product-card'>
-                            <img src={`${API_URL}${product.imageUrl}`} alt={product.name} className='product-image'></img>
-                            <p>{product.price} руб.</p>
-                            <h2>{product.name}</h2>                                                        
-                            <p className='product-rating'>
-                                <span className='star'>★</span>
-                                <span className="rating-value">{product.rating}</span>
-                            </p>
-                            <p className={product.stock > 0? 'in-stock' : 'out-stock'}>
-                                {product.stock > 0? '✔ В наличии' : '✖ Нет в наличии'}
-                            </p>
-                        </div>
+                        <Link to={`/product/${product.id}`} className='product-link'>
+                            <div className='product-card'>
+                                <img src={`${API_URL}${product.imageUrl}`} alt={product.name} className='product-image'></img>
+                                <p>{product.price} руб.</p>
+                                <h2>{product.name}</h2>                                                        
+                                <p className='product-rating'>
+                                    <span className='star'>★</span>
+                                    <span className="rating-value">{product.rating}</span>
+                                </p>
+                                <p className={product.stock > 0? 'in-stock' : 'out-stock'}>
+                                    {product.stock > 0? '✔ В наличии' : '✖ Нет в наличии'}
+                                </p>
+                            </div>
+                        </Link>
                     ))
                 }
 

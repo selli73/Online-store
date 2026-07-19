@@ -7,6 +7,7 @@ export default class Store {
     user = {} as IUser;
     isAuth = false;
     products: IProduct[] = [];
+    product = {} as IProduct;
     totalPage: number = 0;
 
     constructor() {
@@ -23,6 +24,10 @@ export default class Store {
 
     setProducts(products: IProduct[]) {
         this.products = products;
+    }
+
+    setProduct(product: IProduct) {
+        this.product = product;
     }
 
     setTotalPage(totalPage: number) {
@@ -112,6 +117,17 @@ export default class Store {
             const response = await AuthService.getAllProducts(page, limit);
             this.setProducts(response.data.products);
             this.setTotalPage(response.data.totalPages);
+        } catch(error) {
+            throw error;
+        }
+    }
+
+    async getProduct(id: string) {
+        try {
+            const response = await AuthService.getProduct(id);
+            this.setProduct(response.data);
+            console.log(response.data);
+            console.log(this.product);
         } catch(error) {
             throw error;
         }

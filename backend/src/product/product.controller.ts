@@ -25,6 +25,11 @@ export class ProductController {
         return this._productService.products(page, limit);
     }
 
+    @Get(':id')
+    getProductById(@Param('id') id: string) {
+        return this._productService.getProductById(id);
+    }
+
     @Get('search')
     @Roles(Role.ADMIN, Role.USER)
     @ApiOperation({ summary: 'Search products by filter' }) @ApiResponse({ status: 200, description: 'Products received' }) @ApiResponse({ status: 404, description: 'Not found' })

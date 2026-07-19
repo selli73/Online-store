@@ -60,6 +60,20 @@ export class ProductService {
         return result;
     }
 
+    async getProductById(productId: string) {
+        const existProduct = await this._prisma.product.findUnique({
+            where: {
+                id: productId
+            }
+        });
+
+        if (!existProduct) {
+            throw new NotFoundException('Товар не найден');
+        }
+
+        return existProduct;
+    }
+
     async searchProducts(query: string) {
         const splitName = query.trim().split(/\s+/).filter((word)=> Boolean(word));
         

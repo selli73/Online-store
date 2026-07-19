@@ -57,4 +57,8 @@ export default class AuthService {
     static async getAllProducts(page: number, limit: number) {
         return api.get(`/product/all?page=${page}&limit=${limit}`);
     }
+
+    static async getProduct(id: string) {
+        return api.get(`/product/${id}`);
+    }
 }

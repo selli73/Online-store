@@ -5,8 +5,8 @@ export default interface IProduct {
     stock: number;
     applicabilityToCars: string;
     partType: string;
-    maufacturer: string;
-    description: string;
+    manufacturer: string | null;
+    description: string | null;
     imageUrl: string | null;
     rating: number;
 }
