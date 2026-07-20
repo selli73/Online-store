@@ -9,6 +9,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'node:path';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CacheModule } from '@nestjs/cache-manager'
+import { CartModule } from './cart/cart.module';
 import KeyvRedis from '@keyv/redis'
 
 @Module({
@@ -17,7 +18,8 @@ import KeyvRedis from '@keyv/redis'
     CacheModule.register({
       isGlobal: true,
       stores: [new KeyvRedis('redis://localhost:6379')]
-    })
+    }),
+    CartModule
   ],
   controllers: [],
   providers: [],
