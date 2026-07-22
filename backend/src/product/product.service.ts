@@ -34,7 +34,6 @@ export class ProductService {
 
     async products(page: number, limit: number) {
         const cacheKey = `productsAll:${page}:${limit}`;
-        await this._cacheManager.clear();
         const cacheData = await this._cacheManager.get(cacheKey);
     
         if (cacheData) {
