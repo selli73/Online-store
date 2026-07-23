@@ -41,6 +41,10 @@ export class CartService {
             }
         });
 
+        if (existingItem && existingItem.quantity + quantity > product.stock) {
+            throw new BadRequestException('Недостаточно товара на складе');
+        }
+
         if (existingItem) {
             return this._prisma.cartItem.update({
                 where: {
@@ -70,7 +74,11 @@ export class CartService {
                 items: {
                     include: {
                         product: true
+                    },
+                    orderBy: {
+                        id: 'asc'
                     }
+
                 }
             }
         });

@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, PickType } from "@nestjs/swagger";
 import { IsInt, IsOptional, IsString, Min } from "class-validator";
 
 export class AddToCartDto {
@@ -14,8 +14,14 @@ export class AddToCartDto {
 }
 
 export class ChangeQuantityDto {
+    
+    @IsString()
+    cartItemId!: string;
+    
     @IsInt()
     @Min(0)
     @ApiProperty({ description: 'Product quantity' })
     quantity!: number;
 }
+
+export class DeleteDto extends PickType(ChangeQuantityDto, ['cartItemId'] as const) {}

@@ -97,3 +97,8 @@
 .product-page-button:active {
     transform: scale(.98);
 }
+
+.product-page-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

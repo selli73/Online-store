@@ -31,12 +31,26 @@ export default function Products() {
         return ( <h2>Загрузка товаров...</h2> )
     }
     
-    console.log(store.product);
-    
     return (
         <div className='products-container'>
-
-            <h1>Товары</h1>
+            <div className='products-header'>
+                <h1 className='brand-title'>Автомагазин73</h1>
+                <Link to='/cart' className='cart-link'>
+                    <button>
+                        🛒 Перейти в корзину
+                        {
+                            store.cart && store.cart.items && store.cart.items.length > 0 && (
+                                <span className='cart-badge'>{store.cart.items.length}</span>
+                            )
+                        }
+                    </button>
+                </Link>
+                <Link to='/profile/me' className='cart-link'>
+                    <button>
+                        👤 Профиль
+                    </button>                        
+                </Link>
+            </div>
 
             {
                 error && (

@@ -61,4 +61,26 @@ export default class AuthService {
     static async getProduct(id: string) {
         return api.get(`/product/${id}`);
     }
+
+    static async addToCart(productId: string, quantity: number) {
+        return api.post('/cart/addProduct', {
+            productId,
+            quantity
+        });
+    }
+
+    static async getCart() {
+        return api.get('/cart');
+    }
+
+    static async changeQuantityOfProduct(cartItemId: string, quantity: number) {
+        return api.patch('/cart', {
+            cartItemId,
+            quantity
+        });
+    }
+
+    static async deleteCartItem(cartItemId: string) {
+        return api.delete(`/cart/${cartItemId}`);
+    }
 }

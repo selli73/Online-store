@@ -5,6 +5,7 @@ import RecoveryPasswordForm from './components/Authorization/ForgotPassword/Reco
 import {ProfileMe} from "./components/Profile/ProfileMe";
 import Products from "./components/Products/Products";
 import Product from "./components/Product/Product";
+import Cart from "./components/Cart/Cart";
 
 export default function App() {
   
@@ -17,6 +18,7 @@ export default function App() {
         <Route path='/profile/me' element={<ProfileMe />} />
         <Route path='/products' element={<Products />} />
         <Route path='/product/:id' element={<Product />} />
+        <Route path='/cart' element={<Cart />} />
       </Routes>
     </BrowserRouter>
   )

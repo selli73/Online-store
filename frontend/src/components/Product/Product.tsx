@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { Context } from "../../main";
 import { API_URL } from "../../http";
-import ErrorMessage from "../Error/ErrorMessage";
 import './Product.css';
 
 export default function Product() {
@@ -35,12 +34,6 @@ export default function Product() {
     return (        
         <div className='product-page'>
 
-            {
-                error && (
-                    <ErrorMessage errorMessage={error}/>
-                )
-            }   
-
             <img className='product-page-image' src={`${API_URL}${store.product.imageUrl}`} alt={store.product.name}></img>
             <div className='product-page-info'>
                 <h1 className='product-page-title'>{store.product.name}</h1>
@@ -53,6 +46,16 @@ export default function Product() {
                     <span className="product-page-rating-value">{store.product.rating}</span>
                 </p>
                 <p className='product-page-description'>{store.product.description}</p>
+
+                <button className='product-page-button' disabled={error? true : false} onClick={async () => { 
+                    try { 
+                        await store.addToCart(store.product.id, 1) 
+                    } catch(error: any) {
+                        setError(error.response.data.message || 'Не удалось изменить количество') 
+                    } 
+                }}>
+                    Добавить в корзину                   
+                </button>
             </div>
         </div>    
     )
