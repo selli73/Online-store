@@ -92,6 +92,10 @@ export default class AuthService {
     }
 
     static async getPaymentDetails(orderId: string) {
-        return api.get(`orders/${orderId}`);
+        return api.get(`orders/${orderId}/payment-details`);  
+    }
+
+    static async notifyManualPayment(orderId: string) {
+        return api.patch(`orders/${orderId}/notify-payment`);
     }
 }

@@ -4,6 +4,7 @@ import ErrorMessage from "../Error/ErrorMessage";
 import { API_URL } from "../../http";
 import { observer } from "mobx-react-lite";
 import './Cart.css'
+import { useNavigate } from "react-router-dom";
 
 export default observer(function Cart() {
 
@@ -11,8 +12,7 @@ export default observer(function Cart() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
-
-    
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchCart() {
@@ -117,7 +117,8 @@ export default observer(function Cart() {
 
                 <button disabled={selectedItems.length === 0} onClick={async () => { 
                     try {
-                        await store.createOrder(orderData);
+                        const order = await store.createOrder(orderData);
+                        navigate(`/orders/${order.id}/payment`);
                     } catch(error: any) {
                         setError(error.response.data.message || "Ошибка создания заказа");
                     }

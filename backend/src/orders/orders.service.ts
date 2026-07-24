@@ -31,8 +31,6 @@ export class OrdersService {
                 await tx.product.update({ where: { id: product.id }, data: { stock: product.stock - item.quantity }});
 
                 totalAmount += product.price * item.quantity;
-                console.log(product.stock)
-                console.log(item.quantity);
                 orderItemsData.push({ productId: product.id, quantity: item.quantity, price: product.price });
             }
 

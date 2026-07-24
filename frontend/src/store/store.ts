@@ -175,8 +175,9 @@ export default class Store {
 
     async createOrder(data: IOrder) {
         try {
-            await AuthService.createOrder(data);
+            const response = await AuthService.createOrder(data);
             await this.getCart();
+            return response.data;
         } catch(error) {
             throw error;
         }
@@ -184,9 +185,21 @@ export default class Store {
 
    async getPaymentDetails(orderId: string) {
         try {
-            await AuthService.getPaymentDetails(orderId);
+            const response = await AuthService.getPaymentDetails(orderId);
+            return response.data;
         } catch(error) {
             throw error;
         }
+   }
+
+   async notifyManualPayment(orderId: string) {
+    try {
+        await AuthService.notifyManualPayment(orderId);
+        return {
+            message: 'Ожидайте подтверждения об оплате заказа. Как подтвердим оплату мы вас уведомим'
+        }
+    } catch(error) {
+        throw error;
+    }
    }
 }
