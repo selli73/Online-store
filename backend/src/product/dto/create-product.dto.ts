@@ -15,7 +15,7 @@ export class CreateProductDto {
     @ApiProperty({ description: 'Product quantity'})
     @IsNumber()
     @Min(1)
-    quantity!: number
+    stock!: number
 
     @ApiProperty({ description: 'Product applications'})
     @IsString()

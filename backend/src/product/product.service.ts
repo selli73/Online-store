@@ -22,7 +22,7 @@ export class ProductService {
             data: {
                 name: dto.name,
                 price: dto.price,
-                stock: dto.quantity,
+                stock: dto.stock,
                 applicabilityToCars: dto.applicabilityToCars,
                 partType: dto.partType,
                 manufacturer: dto.maufacturer,

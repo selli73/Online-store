@@ -3,6 +3,7 @@ import AuthService from "../services/AuthService";
 import type { IUser } from "../models/IUser";
 import type IProduct from "../models/IProduct";
 import type { ICart } from "../models/ICart";
+import type { IOrder } from "../models/IOrder";
 
 export default class Store {
     user = {} as IUser;
@@ -171,4 +172,21 @@ export default class Store {
             throw error;
         }
     }
+
+    async createOrder(data: IOrder) {
+        try {
+            await AuthService.createOrder(data);
+            await this.getCart();
+        } catch(error) {
+            throw error;
+        }
+    }
+
+   async getPaymentDetails(orderId: string) {
+        try {
+            await AuthService.getPaymentDetails(orderId);
+        } catch(error) {
+            throw error;
+        }
+   }
 }

@@ -1,6 +1,7 @@
 import api from "../http";
 import type { AxiosResponse } from "axios";
 import type { AuthResponse } from "../models/response/AuthResponse";
+import type { IOrder } from "../models/IOrder";
 
 export default class AuthService {
     static async login(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
@@ -82,5 +83,15 @@ export default class AuthService {
 
     static async deleteCartItem(cartItemId: string) {
         return api.delete(`/cart/${cartItemId}`);
+    }
+
+    static async createOrder(data: IOrder) {
+        return api.post('orders', 
+            data
+        );
+    }
+
+    static async getPaymentDetails(orderId: string) {
+        return api.get(`orders/${orderId}`);
     }
 }

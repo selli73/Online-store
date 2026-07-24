@@ -31,10 +31,25 @@ export class OrdersService {
                 await tx.product.update({ where: { id: product.id }, data: { stock: product.stock - item.quantity }});
 
                 totalAmount += product.price * item.quantity;
+                console.log(product.stock)
+                console.log(item.quantity);
                 orderItemsData.push({ productId: product.id, quantity: item.quantity, price: product.price });
             }
 
-            return tx.order.create({ data: { userId, total: totalAmount, items: { create: orderItemsData } }, include: { items: true } });
+            const order = await tx.order.create({ data: { userId, total: totalAmount, items: { create: orderItemsData } }, include: { items: true } });
+
+            await tx.cartItem.deleteMany({
+                where: {
+                    cart: {
+                        userId
+                    },
+                    productId: {
+                        in: dto.items.map(item => item.productId)
+                    }
+                }
+            });
+
+            return order;
          });
     }
 
@@ -92,7 +107,7 @@ export class OrdersService {
         const order = await this._prisma.order.findUnique({ where: { id: orderId } });
 
         if (!order) {
-            throw new NotFoundException('Ордел был не найден');
+            throw new NotFoundException('Заказ был не найден');
         }
 
         if (order.status !== OrderStatus.AWAITING_CONFIRMATION) {

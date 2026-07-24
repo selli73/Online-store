@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { Context } from "../../main";
 import { API_URL } from "../../http";
 import './Product.css';
+import ErrorMessage from "../Error/ErrorMessage";
 
 export default function Product() {
     
@@ -46,6 +47,12 @@ export default function Product() {
                     <span className="product-page-rating-value">{store.product.rating}</span>
                 </p>
                 <p className='product-page-description'>{store.product.description}</p>
+
+                {
+                    error && (
+                        <ErrorMessage errorMessage={error} />
+                    )
+                }
 
                 <button className='product-page-button' disabled={error? true : false} onClick={async () => { 
                     try { 
