@@ -1,10 +1,25 @@
 .profile-container {
-    min-height: 100vh;
+    max-width: 1200px;
+
+    margin: 40px auto;
+
+    padding: 0 20px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+
+    align-items: start;
+}
+
+.profile-left {
     display: flex;
+
     flex-direction: column;
-    align-items: center;
-    padding: 30px;
-    background: #f4f6f8;
+
+    gap: 30px;
 }
 
 .change-password-card {
@@ -143,6 +158,117 @@
     transform: scale(0.98);
 }
 
+.orders-container {
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+
+}
+
+
+.orders-container h2 {
+
+    margin: 0 0 25px;
+
+    font-size: 28px;
+
+    color: #222;
+
+    border-bottom: 1px solid #eee;
+
+    padding-bottom: 15px;
+}
+
+
+.orders-container > p {
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 18px;
+
+}
+
+.order-card {
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+
+    background: #fafafa;
+
+    border: 1px solid #eee;
+
+    transition: .2s;
+}
+
+
+.order-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+
+}
+
+
+.order-card h3 {
+
+    margin: 0 0 15px;
+
+    font-size: 20px;
+
+    color: #222;
+
+}
+
+
+.order-card p {
+
+    margin: 8px 0;
+
+    font-size: 16px;
+
+    color: #555;
+
+}
+
+.order-card p:nth-child(2) {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    color: #222;
+
+}
+
+.order-card p:nth-child(3) {
+
+    display: inline-block;
+
+    margin-top: 12px;
+
+    padding: 6px 14px;
+
+    border-radius: 20px;
+
+    background: #fff3cd;
+
+    color: #856404;
+
+    font-weight: 600;
+
+}
+
 
 
 .error {
@@ -152,3 +278,5 @@
     background: #ffe5e5;
     color: #d32f2f;
 }
+
+

@@ -19,6 +19,18 @@ export class OrdersController {
       return this.ordersService.getOrders(req.user.userId);
     }
 
+    @Get('/admin/awaitingConfirmation')
+    @UseGuards(RolesGuard) @Roles(Role.ADMIN)
+    @ApiOperation({ summary: 'Geting orders awaitng confirmation' }) @ApiResponse({ status: 200, description: 'Orders received successfully' })
+    getOrdersAwaitingConfirmation() {
+      return this.ordersService.getOrdersAwaitingConfirmation();
+    }
+
+    @Get(':id')
+    getOrderById(@Req() req: IJwtUserRequest, @Param('id') id: string) {
+      return this.ordersService.getOrderById(req.user.userId, id);
+    }
+
     @Post()
     @ApiOperation({ summary: 'Create an order' })  @ApiResponse({ status: 201, description: 'order created' })
     create(@Req() req: IJwtUserRequest, @Body() dto: CreateOrderDto) {
@@ -37,8 +49,10 @@ export class OrdersController {
       return this.ordersService.getPaymentDetails(orderId, req.user.userId);
     }
 
+    
+
     @Patch(':orderId/confirm-payment') @UseGuards(RolesGuard) @Roles(Role.ADMIN) 
     confirmPayment(@Param('orderId') orderId: string) {
-      this.ordersService.confirmPayment(orderId);
+      return this.ordersService.confirmPayment(orderId);
     }
 }

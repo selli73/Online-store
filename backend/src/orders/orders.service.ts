@@ -18,7 +18,7 @@ export class OrdersService {
             const orderItemsData: { productId: string; quantity: number; price: number; }[] = [];
 
             for (const item of dto.items) {
-                const product = await this._prisma.product.findUnique({ where: { id: item.productId } });
+                const product = await tx.product.findUnique({ where: { id: item.productId } });
 
                 if (!product) {
                     throw new NotFoundException('Товар не существует');
@@ -49,6 +49,40 @@ export class OrdersService {
 
             return order;
          });
+    }
+
+    async getOrderById(userId: string, orderId: string) {        
+        const order = await this._prisma.order.findUnique({
+            where: {
+                id: orderId
+            },
+            select: {
+                userId: true,
+                status: true,
+                total: true,
+                orderNumber: true,
+                items: {
+                    select: {
+                        product: {
+                            select: {
+                                id: true,
+                                name: true,
+                                rating: true,
+                                imageUrl: true,                                
+                            }
+                        },
+                        price: true,
+                        quantity: true
+                    }
+                }
+            }
+        });
+
+        if (order?.userId !== userId) {
+            throw new ForbiddenException('Это не ваш заказ');
+        }
+
+        return order;
     }
 
     async getOrders(userId: string) {
@@ -99,6 +133,44 @@ export class OrdersService {
             amountToPay: order.total,
             instruction: `Обязательно укажите комментарий к переводу: заказ №${order.orderNumber}`
         }
+    }
+
+    async getOrdersAwaitingConfirmation() {
+        const orders = await this._prisma.order.findMany({
+            where: {
+                status: OrderStatus.AWAITING_CONFIRMATION
+            },
+            select: {
+                id: true,
+                orderNumber: true,
+                total: true,
+                status: true,
+                user: {
+                    select: {
+                        name: true,
+                        email: true,
+                        phone: true
+                    }
+                },
+                items: {
+                    select: {
+                        product: {
+                            select: {
+                                name: true,
+                                imageUrl: true
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                orderNumber: 'asc'
+            }
+        });
+
+        return {
+            orders
+        };
     }
 
     async confirmPayment(orderId: string) {

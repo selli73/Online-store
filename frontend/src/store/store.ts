@@ -193,13 +193,57 @@ export default class Store {
    }
 
    async notifyManualPayment(orderId: string) {
-    try {
-        await AuthService.notifyManualPayment(orderId);
-        return {
-            message: 'Ожидайте подтверждения об оплате заказа. Как подтвердим оплату мы вас уведомим'
+        try {
+            const response = await AuthService.notifyManualPayment(orderId);
+            return response.data;
+        } catch(error) {
+            throw error;
         }
-    } catch(error) {
-        throw error;
-    }
+   }
+
+   async getOrderById(orderId: string) {
+        try {
+            const response = await AuthService.getOrderById(orderId);
+            return response.data;
+        } catch(error) {
+            throw error;
+        }
+   }
+
+   async getMyOrders() {
+        try {
+            const response = await AuthService.getMyOrders();
+            return response.data;
+        } catch(error) {
+            throw error;
+        }
+   }
+
+   async getOrdersAwatingConfirmation() {
+        try {
+            const response = await AuthService.getOrdersAwatingConfirmation();
+            return response.data;
+            
+        } catch(error) {
+            throw error;
+        }
+   }
+
+   async confirmPayment(orderId: string) {
+        try {
+            const response = await AuthService.confirmPayment(orderId);
+            return response;
+        } catch(error) {
+            throw error;
+        }
+   }
+
+   async createReview(rating: number, productId: string, text: string) {
+        try {
+            const response = await AuthService.createReview(rating, productId, text);
+            return response.data;
+        } catch(error) {
+            throw error;
+        }
    }
 }

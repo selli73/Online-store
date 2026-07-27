@@ -2,6 +2,7 @@ import { useState } from "react"
 import StepEmail from "./StepEmail";
 import StepCode from "./StepCode";
 import StepNewPassword from "./StepNewPassword";
+import './RecoveryPasswordForm.css';
 
 type statusPasswordType = 'unchanged' | 'changed';
 
@@ -10,9 +11,6 @@ export default function RecoveryPasswordForm() {
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState<statusPasswordType>('unchanged');
     
-
-    console.log('app');
-    console.log('Текущений стэп', step);
     function handleNext(email: string) {
         setEmail(email);
         setStep(2);
@@ -28,7 +26,7 @@ export default function RecoveryPasswordForm() {
     }
 
     return (
-        <div>
+        <div className='wrapper'>
         {
             step === 1 && (
                 <StepEmail next={handleNext}/>

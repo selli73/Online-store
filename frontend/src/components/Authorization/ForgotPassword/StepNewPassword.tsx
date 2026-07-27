@@ -28,14 +28,14 @@ export default function StepNewPassword({ onChanged }: StepNewPasswordProps) {
     }
 
     return (
-        <div>
-            <h2>Восстановление пароля</h2>
+        <div className='form'>
+            <h2 className='title'>Восстановление пароля</h2>
             {
                 error && <ErrorMessage errorMessage={error} />
             }
-            <input type='password' placeholder='введите пароль' value={newPassword} onChange={(event) => setNewPassword(event.target.value)}/>
-            <input type='password' placeholder='подтвердите пароль' value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}/>
-            <button onClick={handleButtonClick}>Сохранить</button>
+            <input className='input' type='password' placeholder='введите пароль' value={newPassword} onChange={(event) => setNewPassword(event.target.value)}/>
+            <input className='input' type='password' placeholder='подтвердите пароль' value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}/>
+            <button className='button' onClick={handleButtonClick}>Сохранить</button>
         </div>
     )
 }

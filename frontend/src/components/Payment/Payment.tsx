@@ -74,7 +74,7 @@ export default function Payment() {
             <button className='button-confirm' onClick={async () => { 
                 if (orderId) {
                     await store.notifyManualPayment(orderId)
-                    navigate('/products')
+                    navigate('/profile/me')
                 }                
             }}
             >

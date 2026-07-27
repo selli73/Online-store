@@ -7,6 +7,8 @@ import Products from "./components/Products/Products";
 import Product from "./components/Product/Product";
 import Cart from "./components/Cart/Cart";
 import Payment from "./components/Payment/Payment";
+import AdminOrders from "./components/Admin/Orders/AdminOrders";
+import Order from "./components/Order/Order";
 
 export default function App() {
   
@@ -21,6 +23,8 @@ export default function App() {
         <Route path='/product/:id' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/orders/:orderId/payment' element={<Payment />} />
+        <Route path='/adminOrders' element={<AdminOrders />} />
+        <Route path='/order/:orderId/info' element={<Order />} />
       </Routes>
     </BrowserRouter>
   )

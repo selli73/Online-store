@@ -2,6 +2,7 @@ import api from "../http";
 import type { AxiosResponse } from "axios";
 import type { AuthResponse } from "../models/response/AuthResponse";
 import type { IOrder } from "../models/IOrder";
+import type { IReview } from "../models/IReview";
 
 export default class AuthService {
     static async login(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
@@ -97,5 +98,29 @@ export default class AuthService {
 
     static async notifyManualPayment(orderId: string) {
         return api.patch(`orders/${orderId}/notify-payment`);
+    }
+
+    static async getOrderById(orderId: string) {
+        return api.get(`orders/${orderId}`);
+    }
+
+    static async getMyOrders() {
+        return api.get('/orders/');
+    }
+
+    static async getOrdersAwatingConfirmation() {
+        return api.get('/orders/admin/awaitingConfirmation');
+    }
+
+    static async confirmPayment(orderId: string) {
+        return api.patch(`/orders/${orderId}/confirm-payment`)
+    }
+
+    static async createReview(rating: number, productId: string, text: string) {
+        return api.post('reviews/create', {
+            rating,
+            productId,
+            text
+        });
     }
 }
