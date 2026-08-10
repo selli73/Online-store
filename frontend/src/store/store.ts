@@ -4,6 +4,8 @@ import type { IUser } from "../models/IUser";
 import type IProduct from "../models/IProduct";
 import type { ICart } from "../models/ICart";
 import type { IOrder } from "../models/IOrder";
+import type { IProductEdit } from "../models/IProductEdit";
+import type { ICreateProduct } from "../models/ICreateProduct";
 
 export default class Store {
     user = {} as IUser;
@@ -138,6 +140,14 @@ export default class Store {
         }
     }
 
+    async createProduct(dto: ICreateProduct) {
+        try {
+            const response = await AuthService.createProduct(dto);            
+        } catch(error) {
+            throw error;
+        }
+    }
+
     async addToCart(productId: string, quantity: number) {
         try {
             await AuthService.addToCart(productId, quantity);           
@@ -244,6 +254,44 @@ export default class Store {
             return response.data;
         } catch(error) {
             throw error;
+        }
+   }
+
+   async deleteProduct(productId: string) {
+        try {
+            const response = await AuthService.deleteProduct(productId);
+            
+            this.setProducts(
+                this.products.filter(product => product.id !== productId)
+            );
+
+            return {
+                response: response.data,
+                message: 'Товар успешно удален'
+            };
+        } catch(error) {
+            throw error;
+        }
+   }
+
+   async editProduct(productId: string, dto: IProductEdit) {
+        try {
+            const response = await AuthService.editProduct(productId, dto);
+
+            this.setProducts(
+                this.products.map(product =>
+                    product.id === productId
+                        ? { ...product, ...dto }
+                        : product
+                )
+            );
+
+            return {
+                response: response.data,
+                message: 'Товар успешно обновлен'
+            };
+        } catch(error) {
+            throw error
         }
    }
 }

@@ -62,6 +62,7 @@ model Product {
   manufacturer        String?
   description         String?
   imageUrl            String?
+  isDeleted           Boolean @default(false)
   orderItems          OrderItem[]
   review              Review[]
   cartItems           CartItem[]
@@ -98,7 +99,7 @@ model Review {
   userId    String
   user      User @relation(fields: [userId], references: [id])
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([userId, productId])

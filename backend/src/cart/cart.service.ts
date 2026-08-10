@@ -72,6 +72,7 @@ export class CartService {
             },
             include: {
                 items: {
+                    where: { product: { isDeleted: false } },
                     include: {
                         product: true
                     },

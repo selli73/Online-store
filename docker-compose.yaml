@@ -1,12 +1,36 @@
 services:
+  backend:
+    image: store_backend
+    build:
+      context: ./backend
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+  frontend:
+    image: store_frontend
+    build:
+      context: ./frontend
+    depends_on:
+      [backend]
+    ports:
+      - "5173:5173"
+    env_file:
+     - ./frontend/.env
+
   database:
     image: postgres:16-alpine
     restart: always
     container_name: autoparts_db
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: autoparts
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres -d autoparts" ]
       interval: 10s
@@ -22,6 +46,11 @@ services:
     container_name: autoparts_redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:

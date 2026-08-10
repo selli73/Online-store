@@ -1,5 +1,5 @@
 import { ApiProperty, PickType } from "@nestjs/swagger";
-import { IsInt, IsOptional, IsString, Min } from "class-validator";
+import { IsInt, IsOptional, IsString, Max, Min } from "class-validator";
 
 export class AddToCartDto {
     @IsString()
@@ -9,6 +9,7 @@ export class AddToCartDto {
     @IsInt()
     @IsOptional()    
     @Min(1)
+    @Max(2147483647)
     @ApiProperty({ description: 'Product quantity' })
     quantity!: number;
 }
@@ -20,6 +21,7 @@ export class ChangeQuantityDto {
     
     @IsInt()
     @Min(0)
+    @Max(2147483647)
     @ApiProperty({ description: 'Product quantity' })
     quantity!: number;
 }

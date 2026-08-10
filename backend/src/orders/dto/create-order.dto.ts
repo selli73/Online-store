@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsArray, IsNumber, IsString, Min, ValidateNested } from "class-validator"
+import { IsArray, IsNumber, IsString, Max, Min, ValidateNested } from "class-validator"
 import { ApiProperty } from '@nestjs/swagger'
 
 
@@ -10,6 +10,7 @@ export class OrderItemDto {
 
     @IsNumber()
     @Min(1)
+    @Max(2147483647)
     @ApiProperty({ description: 'Product quantity' })
     quantity!: number
 }

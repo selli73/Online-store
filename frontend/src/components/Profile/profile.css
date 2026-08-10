@@ -22,6 +22,12 @@
     gap: 30px;
 }
 
+.profile-right {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
 .change-password-card {
     width: 350px;
     margin-top: 20px;
@@ -269,8 +275,6 @@
 
 }
 
-
-
 .error {
     margin-top: 15px;
     padding: 10px;
@@ -278,5 +282,3 @@
     background: #ffe5e5;
     color: #d32f2f;
 }
-
-

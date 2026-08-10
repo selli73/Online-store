@@ -77,9 +77,26 @@ export const ProfileMe = observer(() => {
                     </div>                    
                     }
                 </div>
+
+                {
+                    store.isAuth && clickChange &&
+                    <div className='change-password-card'>
+                        <h2>Смена пароля</h2>
+                        <div className='passwords-container'>
+                            <input type='password' placeholder='old password' value={oldPassword} onChange={(event) => setOldPassword(event.target.value)}/>
+                            <input type='password' placeholder='new password' value={newPassword} onChange={(event) => setNewPassword(event.target.value)}/>
+                            {
+                                errorChangePassword && (
+                                    <ErrorMessage errorMessage={errorChangePassword}/>
+                                )
+                            }
+                            <button className='save-password-button' onClick={savePassword}>Сохранить</button>
+                        </div>                                            
+                    </div>
+                }
             </div>
             
-
+            <div className='profile-right'>
                 {
                     store.isAuth && (
                         <div className='orders-container'>
@@ -110,22 +127,12 @@ export const ProfileMe = observer(() => {
                     )
                 }
 
-                {
-                    store.isAuth && clickChange &&
-                    <div className='change-password-card'>
-                        <h2>Смена пароля</h2>
-                        <div className='passwords-container'>
-                            <input type='password' placeholder='old password' value={oldPassword} onChange={(event) => setOldPassword(event.target.value)}/>
-                            <input type='password' placeholder='new password' value={newPassword} onChange={(event) => setNewPassword(event.target.value)}/>
-                            {
-                                errorChangePassword && (
-                                    <ErrorMessage errorMessage={errorChangePassword}/>
-                                )
-                            }
-                            <button className='save-password-button' onClick={savePassword}>Сохранить</button>
-                        </div>                                            
-                    </div>
-                }           
+                
+            </div>
+
+                
+
+                           
         </div>
     );
 });

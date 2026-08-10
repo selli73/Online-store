@@ -9,6 +9,9 @@ import Cart from "./components/Cart/Cart";
 import Payment from "./components/Payment/Payment";
 import AdminOrders from "./components/Admin/Orders/AdminOrders";
 import Order from "./components/Order/Order";
+import { AdminProducts } from "./components/Admin/Products/AdminPanel";
+import { EditProductPage } from "./components/Admin/Products/EditProductPage";
+import { CreateProductPage } from "./components/Admin/Products/CreateProductPage";
 
 export default function App() {
   
@@ -23,8 +26,11 @@ export default function App() {
         <Route path='/product/:id' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/orders/:orderId/payment' element={<Payment />} />
-        <Route path='/adminOrders' element={<AdminOrders />} />
         <Route path='/order/:orderId/info' element={<Order />} />
+        <Route path='/admin/orders' element={<AdminOrders />} />
+        <Route path='/admin/products' element={<AdminProducts />} />
+        <Route path='/admin/products/create' element={<CreateProductPage />} />
+        <Route path='/admin/products/edit/:id' element={<EditProductPage />} />
       </Routes>
     </BrowserRouter>
   )

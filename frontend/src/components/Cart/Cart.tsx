@@ -87,7 +87,7 @@ export default observer(function Cart() {
                                     </button>
                                 </div>
                             </div>     
-                            <input type='checkbox' checked={selectedItems.includes(item.id)} onChange={(event) => {
+                            <input type='checkbox' checked={selectedItems.includes(item.id)} onChange={() => {
                                 if(selectedItems.includes(item.id)){
                                     setSelectedItems(selectedItems.filter(id=>id!==item.id));
                                 } else {

@@ -2,7 +2,9 @@ import api from "../http";
 import type { AxiosResponse } from "axios";
 import type { AuthResponse } from "../models/response/AuthResponse";
 import type { IOrder } from "../models/IOrder";
-import type { IReview } from "../models/IReview";
+import type IProduct from "../models/IProduct";
+import type { IProductEdit } from "../models/IProductEdit";
+import type { ICreateProduct } from "../models/ICreateProduct";
 
 export default class AuthService {
     static async login(email: string, password: string): Promise<AxiosResponse<AuthResponse>> {
@@ -64,6 +66,12 @@ export default class AuthService {
         return api.get(`/product/${id}`);
     }
 
+    static async createProduct(dto: ICreateProduct) {
+        return api.post('/product', {
+            ...dto
+        });
+    }
+
     static async addToCart(productId: string, quantity: number) {
         return api.post('/cart/addProduct', {
             productId,
@@ -121,6 +129,16 @@ export default class AuthService {
             rating,
             productId,
             text
+        });
+    }
+
+    static async deleteProduct(productId: string) {
+        return api.delete(`/product/${productId}`);
+    }
+
+    static async editProduct(productId: string, dto: IProductEdit) {
+        return api.put(`/product/${productId}`, {
+            ...dto
         });
     }
 }

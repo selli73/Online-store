@@ -25,7 +25,7 @@ export class ProductService {
                 stock: dto.stock,
                 applicabilityToCars: dto.applicabilityToCars,
                 partType: dto.partType,
-                manufacturer: dto.maufacturer,
+                manufacturer: dto.manufacturer,
                 description: dto.description
             }
         });
@@ -34,18 +34,21 @@ export class ProductService {
 
     async products(page: number, limit: number) {
         const cacheKey = `productsAll:${page}:${limit}`;
-        const cacheData = await this._cacheManager.get(cacheKey);
+        // const cacheData = await this._cacheManager.get(cacheKey);
     
-        if (cacheData) {
-            return cacheData;
-        }
+        // if (cacheData) {
+        //     return cacheData;
+        // }
 
         const [products, total] = [
             await this._prisma.product.findMany({
-            skip: (page - 1) * limit,
-            take: limit,
-            orderBy: { name: 'asc' }}),
-            await this._prisma.product.count()
+                where: { isDeleted: false },
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: { name: 'asc' }}),
+            await this._prisma.product.count({
+                where: { isDeleted: false }
+            })
         ];
 
         const result = {
@@ -148,8 +151,11 @@ export class ProductService {
     async delete(id: string) {
         await this.findOne(id);
 
-        return this._prisma.product.delete({
-            where: { id }
+        return this._prisma.product.update({
+            where: { id },
+            data: {
+                isDeleted: true
+            }
         });
     }
 
