@@ -34,11 +34,11 @@ export class ProductService {
 
     async products(page: number, limit: number) {
         const cacheKey = `productsAll:${page}:${limit}`;
-        // const cacheData = await this._cacheManager.get(cacheKey);
+        const cacheData = await this._cacheManager.get(cacheKey);
     
-        // if (cacheData) {
-        //     return cacheData;
-        // }
+        if (cacheData) {
+            return cacheData;
+        }
 
         const [products, total] = [
             await this._prisma.product.findMany({
