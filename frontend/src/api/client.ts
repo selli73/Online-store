@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL: string = import.meta.env.VITE_API_BACKEND_URL || '/api';
+export const API_URL: string = '/api';
 
 export const TOKEN_KEY = 'access_token';
 
