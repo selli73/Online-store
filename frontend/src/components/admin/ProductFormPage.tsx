@@ -259,7 +259,6 @@ export function ProductFormPage({ mode }: { mode: 'create' | 'edit' }) {
                             value={form.stock}
                             onChange={(event) => update('stock', event.target.value)}
                         />
-                        <span className="field__hint">Минимум 1 — так требует бэкенд</span>
                     </div>
 
                     <div className="field">

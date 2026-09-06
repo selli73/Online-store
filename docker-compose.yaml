@@ -20,8 +20,6 @@ services:
       [backend]
     ports:
       - "80:80"
-    env_file:
-     - ./frontend/.env
   database:
     image: postgres:16-alpine
     restart: always
