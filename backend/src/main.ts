@@ -10,7 +10,8 @@ async function bootstrap() {
   }));
   app.enableCors({
     credentials: true,
-    origin: 'http://localhost:5173'
+    // http://localhost — фронт под nginx в докере, :5173 — vite в режиме разработки
+    origin: ['http://localhost', 'http://localhost:5173']
   })
   const config = new DocumentBuilder()  // помогает описать базовую информацию об API: название, описание, версию и т.д.
     .setTitle('Auto Parts Store')

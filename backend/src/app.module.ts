@@ -17,7 +17,7 @@ import KeyvRedis from '@keyv/redis'
     , MailModule, ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', '..', 'uploads'), serveRoot: '/uploads/' }), ReviewsModule,
     CacheModule.register({
       isGlobal: true,
-      stores: [new KeyvRedis('redis://localhost:6379')]
+      stores: [new KeyvRedis('redis://redis:6379')]
     }),
     CartModule
   ],

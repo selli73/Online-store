@@ -18,7 +18,7 @@ export class ProductService {
             throw new BadRequestException('Товар с таким наименование уже существует');
         }
 
-        const product = this._prisma.product.create({
+        const product = await this._prisma.product.create({
             data: {
                 name: dto.name,
                 price: dto.price,
@@ -29,7 +29,21 @@ export class ProductService {
                 description: dto.description
             }
         });
+
+        await this.invalidateProductsCache();
+
         return product;
+    }
+
+    /**
+     * Сбрасывает кеш списка и поиска товаров.
+     *
+     * Ключи параметризованы страницей, лимитом и поисковым запросом, поэтому
+     * точечно удалить нужные нельзя — чистим стор целиком. Без этого созданный
+     * или изменённый товар не появлялся бы в каталоге до истечения TTL (час).
+     */
+    private async invalidateProductsCache() {
+        await this._cacheManager.clear();
     }
 
     async products(page: number, limit: number) {
@@ -142,21 +156,29 @@ export class ProductService {
     async update(id: string, dto: UpdateProductDto) {
         await this.findOne(id);
 
-        return this._prisma.product.update({
+        const product = await this._prisma.product.update({
             where: { id },
             data: dto
         });
+
+        await this.invalidateProductsCache();
+
+        return product;
     }
 
     async delete(id: string) {
         await this.findOne(id);
 
-        return this._prisma.product.update({
+        const product = await this._prisma.product.update({
             where: { id },
             data: {
                 isDeleted: true
             }
         });
+
+        await this.invalidateProductsCache();
+
+        return product;
     }
 
     async findOne(id: string) {
@@ -172,9 +194,13 @@ export class ProductService {
     async uploadProductImage(id: string, imageUrl: string) {
         await this.findOne(id);
 
-        return this._prisma.product.update({
+        const product = await this._prisma.product.update({
             where: { id },
             data: { imageUrl }
         });
+
+        await this.invalidateProductsCache();
+
+        return product;
     }
 }

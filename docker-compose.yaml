@@ -19,10 +19,9 @@ services:
     depends_on:
       [backend]
     ports:
-      - "5173:5173"
+      - "80:80"
     env_file:
      - ./frontend/.env
-
   database:
     image: postgres:16-alpine
     restart: always

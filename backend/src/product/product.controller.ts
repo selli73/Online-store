@@ -25,16 +25,19 @@ export class ProductController {
         return this._productService.products(page, limit);
     }
 
-    @Get(':id')
-    getProductById(@Param('id') id: string) {
-        return this._productService.getProductById(id);
-    }
-
+    // ВАЖНО: @Get('search') должен быть объявлен раньше @Get(':id'), иначе
+    // маршрут ':id' перехватывает /product/search и поиск становится недоступен.
     @Get('search')
     @Roles(Role.ADMIN, Role.USER)
     @ApiOperation({ summary: 'Search products by filter' }) @ApiResponse({ status: 200, description: 'Products received' }) @ApiResponse({ status: 404, description: 'Not found' })
     searchProducts(@Query('query') name: string) {
         return this._productService.searchProducts(name);
+    }
+
+    @Get(':id')
+    @Roles(Role.USER, Role.ADMIN)
+    getProductById(@Param('id') id: string) {
+        return this._productService.getProductById(id);
     }
 
     @Post() 

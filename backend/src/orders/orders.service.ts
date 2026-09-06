@@ -1,19 +1,25 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderStatus, PaymentMethod } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 
 @Injectable()
 export class OrdersService {
-    constructor(private _prisma: PrismaService, private _configService: ConfigService) {}
+    constructor(
+        private _prisma: PrismaService,
+        private _configService: ConfigService,
+        @Inject(CACHE_MANAGER) private _cacheManager: Cache,
+    ) {}
 
     async create(userId: string, dto: CreateOrderDto) {
         if (dto.items.length === 0)  {
             throw new BadRequestException('Корзина пуста');
         }
 
-        return this._prisma.$transaction(async (tx) => { 
+        const order = await this._prisma.$transaction(async (tx) => {
             let totalAmount = 0;
             const orderItemsData: { productId: string; quantity: number; price: number; }[] = [];
 
@@ -49,6 +55,12 @@ export class OrdersService {
 
             return order;
          });
+
+        // Заказ списал товар со склада — кешированный каталог показывал бы
+        // старый остаток до истечения часового TTL.
+        await this._cacheManager.clear();
+
+        return order;
     }
 
     async getOrderById(userId: string, orderId: string) {        

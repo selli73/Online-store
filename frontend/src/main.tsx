@@ -1,22 +1,13 @@
-import { createContext } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import Store from './store/store.ts'  
-
-interface State {
-  store: Store
-}
-
-const store = new Store();
-
-export const Context = createContext<State>({ // чтобы испозовать этот Store внутри компонентов, мы воспользуемся Context API
-  store
-})
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { store, StoreContext } from './store/context';
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
-  <Context.Provider value={{
-    store
-  }}>
-    <App />
-  </Context.Provider>
-)
+    <StrictMode>
+        <StoreContext.Provider value={store}>
+            <App />
+        </StoreContext.Provider>
+    </StrictMode>,
+);
