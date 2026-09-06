@@ -26,9 +26,15 @@ COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=prerelease /usr/src/app/dist ./dist
 COPY --from=prerelease /usr/src/app/package.json .
+
+
+COPY --from=prerelease /usr/src/app/prisma ./prisma
+COPY --from=prerelease /usr/src/app/prisma.config.ts .
+
 RUN mkdir -p /usr/src/app/uploads && chown -R bun:bun /usr/src/app
 
 # run the app
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT ["bun", "run", "start:prod"]
+
+ENTRYPOINT ["sh", "-c", "bunx prisma migrate deploy && exec bun run start:prod"]
