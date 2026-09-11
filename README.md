@@ -160,6 +160,3 @@ docker exec -it autoparts_db psql -U postgres -d autoparts -c "UPDATE \"User\" S
   задачу без сложной интеграции платёжных систем;
 - Docker Compose сильно упрощает запуск проекта с несколькими сервисами
   (Postgres, Redis, Nginx) одной командой.
-
-## :bust_in_silhouette: Автор
-- Имя — [GitHub](https://github.com/selli73)
